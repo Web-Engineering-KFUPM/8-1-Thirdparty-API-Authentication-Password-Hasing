@@ -1,14 +1,17 @@
 /**
  * =========================================================
- * SECURE WEATHER DASHBOARD LAB - TODO GUIDE + HINT SOLUTIONS
+ * Lab: SECURE WEATHER DASHBOARD
  * =========================================================
  *
  * ===================================================================
    LAB SETUP INSTRUCTIONS
  * ===================================================================
  * 1) Initialize project and install dependencies:
- *      npm init -y
- *      npm install express bcryptjs jsonwebtoken dotenv
+ *     Run either of these commands:
+ *      npm i
+ *      OR
+ *      npm install
+ *      npm install express bcryptjs jsonwebtoken
  *      
  *      If your system blocks running npm commands (especially on Windows PowerShell),
  *           run this command first to allow script execution:
@@ -229,14 +232,12 @@
  *        return res.status(500).json({ error: "Server error during weather fetch" });
  */
 
-
-require("dotenv").config();
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 const JWT_SECRET = "abc123";
 
 app.use(express.json());

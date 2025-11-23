@@ -25,7 +25,7 @@
  *      (Already defined for you below. Do NOT change it so tests pass.)
  *
  * 4) Start the server:
- *      node index.js
+ *      node server.js
  *
  * 5) Health check:
  *    - METHOD: GET
@@ -35,8 +35,9 @@
  * =========================================================
  * HOW TO SEND JSON (VERY IMPORTANT)
  * =========================================================
- * First install the postman from the VS code extension store.
- * In Postman:
+ * Install the postman from the VS code extension store.
+ * 
+ * In Postman (First complete all the TODOs to test the routes):
  *  - METHOD: POST
  *  - URL:    e.g. http://localhost:3000/register
  *  - Click on "Body" (Just Below the url input field):

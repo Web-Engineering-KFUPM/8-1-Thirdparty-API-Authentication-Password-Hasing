@@ -18,14 +18,11 @@ You must complete the TODOs in `server.js` to implement secure user authenticati
 ## 📖 Reading Assignment  
 Before starting the lab, review the following ZyBooks sections:
 
-1. **8.1 Third-party web APIs**  
-   https://learn.zybooks.com/zybook/SWE363Fall2025/chapter/8/section/1
+1. 8.1 Third-party web APIs
 
-2. **8.2 Token-based user authentication**  
-   https://learn.zybooks.com/zybook/SWE363Fall2025/chapter/8/section/2
+2. 8.2 Token-based user authentication
 
-3. **8.3 Password hashing**  
-   https://learn.zybooks.com/zybook/SWE363Fall2025/chapter/8/section/3?content_resource_id=114962979
+3. 8.3 Password hashing
 
 ---
 

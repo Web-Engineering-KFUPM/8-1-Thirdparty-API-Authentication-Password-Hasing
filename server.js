@@ -222,6 +222,8 @@
  *
  */
 
+//
+
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -244,14 +246,63 @@ app.get("/", (_req, res) => {
 // POST /register
 // =========================
 app.post("/register", async (req, res) => {
-  // Implement logic here based on the TODO 1.
+  try {
+    const { email, password } = req.body || {};
+
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+
+    const existing = users.find((u) => u.email === email);
+
+    if (existing) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+
+    const hash = await bcrypt.hash(password, 10);
+
+    users.push({
+      email,
+      passwordHash: hash,
+    });
+
+    return res.status(201).json({ message: "User registered!" });
+  } catch (err) {
+    console.error("Register error:", err);
+    return res.status(500).json({ error: "Server error during register" });
+  }
 });
 
 // =========================
 // POST /login
 // =========================
 app.post("/login", async (req, res) => {
-  // Implement logic here based on the TODO 2.
+  try {
+    const { email, password } = req.body || {};
+
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+
+    const user = users.find((u) => u.email === email);
+
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+
+    const match = await bcrypt.compare(password, user.passwordHash);
+
+    if (!match) {
+      return res.status(400).json({ error: "Wrong password" });
+    }
+
+    const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "1h" });
+
+    return res.json({ token });
+  } catch (err) {
+    console.error("Login error:", err);
+    return res.status(500).json({ error: "Server error during login" });
+  }
 });
 
 // =========================
@@ -259,7 +310,68 @@ app.post("/login", async (req, res) => {
 // GET /weather?city=Riyadh
 // =========================
 app.get("/weather", async (req, res) => {
-  // Implement logic here based on the TODO 3.
+  const auth = req.headers.authorization;
+
+  if (!auth) {
+    return res.status(401).json({ error: "Missing token" });
+  }
+
+  const token = auth.split(" ")[1];
+
+  try {
+    jwt.verify(token, JWT_SECRET);
+  } catch {
+    return res.status(401).json({ error: "Invalid token" });
+  }
+
+  const city = req.query.city;
+
+  if (!city) {
+    return res.status(400).json({ error: "City required" });
+  }
+
+  try {
+    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
+    const geoResponse = await fetch(geoUrl);
+
+    if (!geoResponse.ok) {
+      return res.status(500).json({ error: "Error from geocoding API" });
+    }
+
+    const geoData = await geoResponse.json();
+
+    if (!geoData.results || geoData.results.length === 0) {
+      return res.status(404).json({ error: "City not found" });
+    }
+
+    const place = geoData.results[0];
+    const { latitude, longitude, name, country } = place;
+
+    const weatherUrl =
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,wind_speed_10m,weather_code`;
+
+    const weatherResponse = await fetch(weatherUrl);
+
+    if (!weatherResponse.ok) {
+      return res.status(500).json({ error: "Error from weather API" });
+    }
+
+    const weatherData = await weatherResponse.json();
+
+    return res.json({
+      city: name,
+      country,
+      latitude,
+      longitude,
+      temperature: weatherData.current?.temperature_2m,
+      wind_speed: weatherData.current?.wind_speed_10m,
+      weather_code: weatherData.current?.weather_code,
+      raw: weatherData
+    });
+  } catch (err) {
+    console.error("Weather fetch error:", err);
+    return res.status(500).json({ error: "Server error during weather fetch" });
+  }
 });
 
 // Start server

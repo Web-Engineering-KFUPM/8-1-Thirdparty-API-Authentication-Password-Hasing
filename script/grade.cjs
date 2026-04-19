@@ -15,7 +15,7 @@
  * Deadline: 20 Apr 2026 20:59 (Asia/Riyadh, UTC+03:00)
  *
  * Expected repo layout:
- * - project folder: 8-1-Thirdparty-API-Authentication-Password-Hasing-main/
+ * - project folder: 8-1-Thirdparty-API-Authentication-Password-Hasing/
  * - grader file:    script/grade.cjs
  * - student file:   server.js
  *
@@ -206,7 +206,7 @@ function pickProjectRoot() {
 
   const nestedMain = path.join(
     REPO_ROOT,
-    "8-1-Thirdparty-API-Authentication-Password-Hasing-main"
+    "8-1-Thirdparty-API-Authentication-Password-Hasing"
   );
   if (existsFile(path.join(nestedMain, "server.js"))) {
     return nestedMain;
@@ -548,7 +548,7 @@ const totalScore = round2(stepsScore + submissionScore);
 /* -----------------------------
    Build summary + feedback
 -------------------------------- */
-const LAB_NAME = "8-1-Thirdparty-API-Authentication-Password-Hasing-main";
+const LAB_NAME = "8-1-Thirdparty-API-Authentication-Password-Hasing";
 
 const submissionLine = `- **Lab:** ${LAB_NAME}
 - **Deadline (Riyadh / UTC+03:00):** ${DEADLINE_RIYADH_ISO}

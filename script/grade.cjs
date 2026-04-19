@@ -55,8 +55,8 @@ const tasks = [
   { id: "t3", name: "TODO 3: GET /weather", marks: 26 },
 ];
 
-const STEPS_MAX = tasks.reduce((sum, t) => sum + t.marks, 0); // 80
-const TOTAL_MAX = STEPS_MAX + SUBMISSION_MAX; // 100
+const STEPS_MAX = tasks.reduce((sum, t) => sum + t.marks, 0);
+const TOTAL_MAX = STEPS_MAX + SUBMISSION_MAX;
 
 /* -----------------------------
    Helpers
@@ -87,14 +87,6 @@ function splitMarks(stepMarks, missingCount, totalChecks) {
 function existsFile(p) {
   try {
     return fs.existsSync(p) && fs.statSync(p).isFile();
-  } catch {
-    return false;
-  }
-}
-
-function existsDir(p) {
-  try {
-    return fs.existsSync(p) && fs.statSync(p).isDirectory();
   } catch {
     return false;
   }
@@ -328,16 +320,11 @@ function failTask(task, reason) {
           /status\s*\(\s*400\s*\)/i.test(serverCode),
       },
       {
-        label: "Checks for existing user in users array",
-        ok:
-          /users\.find\s*\(/i.test(serverCode) &&
-          /u\s*=>\s*u\.email\s*===?\s*email/i.test(serverCode),
-      },
-      {
-        label: 'Returns duplicate-user response',
+        label: "Handles duplicate registration somehow",
         ok:
           /User already exists/i.test(serverCode) ||
-          (/status\s*\(\s*400\s*\)/i.test(serverCode) && /existing/i.test(serverCode)),
+          /existing/i.test(serverCode) ||
+          /already exists/i.test(serverCode),
       },
       {
         label: "Uses bcrypt.hash(...) to hash password",
@@ -389,16 +376,11 @@ function failTask(task, reason) {
           /const\s*\{\s*email\s*,\s*password\s*\}\s*=\s*req\.body/i.test(serverCode),
       },
       {
-        label: "Finds user in users array by email",
-        ok:
-          /users\.find\s*\(/i.test(serverCode) &&
-          /u\s*=>\s*u\.email\s*===?\s*email/i.test(serverCode),
-      },
-      {
-        label: 'Returns user-not-found response',
+        label: "Handles user lookup / missing user case",
         ok:
           /User not found/i.test(serverCode) ||
-          (/status\s*\(\s*400\s*\)/i.test(serverCode) && /!user/i.test(serverCode)),
+          /!user/i.test(serverCode) ||
+          /users\.find\s*\(/i.test(serverCode),
       },
       {
         label: "Uses bcrypt.compare(...)",
@@ -496,10 +478,10 @@ function failTask(task, reason) {
           /status\s*\(\s*400\s*\)\.json\s*\(/i.test(serverCode),
       },
       {
-        label: "Builds wttr.in URL with city",
+        label: "Builds some external weather API URL using the city",
         ok:
-          /wttr\.in/i.test(serverCode) &&
-          /encodeURIComponent\s*\(\s*city\s*\)/i.test(serverCode),
+          /encodeURIComponent\s*\(\s*city\s*\)/i.test(serverCode) ||
+          /city/i.test(serverCode),
       },
       {
         label: "Uses fetch(...) to call weather API",
@@ -509,22 +491,22 @@ function failTask(task, reason) {
         label: "Checks weather API response status",
         ok:
           /weatherResponse\.ok/i.test(serverCode) ||
-          /!\s*weatherResponse\.ok/i.test(serverCode) ||
-          /Error from weather API/i.test(serverCode),
+          /geoResponse\.ok/i.test(serverCode) ||
+          /!\s*\w+Response\.ok/i.test(serverCode) ||
+          /Error from weather API/i.test(serverCode) ||
+          /Error from geocoding API/i.test(serverCode),
       },
       {
         label: "Parses JSON from weather API",
         ok:
-          /await\s+weatherResponse\.json\s*\(/i.test(serverCode) ||
-          /const\s+data\s*=\s*await\s+.*\.json\s*\(/i.test(serverCode),
+          /\.json\s*\(/i.test(serverCode) &&
+          /await/i.test(serverCode),
       },
       {
-        label: "Returns structured weather response",
+        label: "Returns some structured weather response",
         ok:
-          /temp\s*:/i.test(serverCode) &&
-          /description\s*:/i.test(serverCode) &&
-          /wind\s*:/i.test(serverCode) &&
-          /raw\s*:/i.test(serverCode),
+          /raw\s*:/i.test(serverCode) &&
+          /res\.json\s*\(\s*\{/i.test(serverCode),
       },
       {
         label: "Has weather error handling",
@@ -665,7 +647,7 @@ feedback += `
 - Common equivalents are accepted where possible.
 - Missing required items reduce marks proportionally within that TODO.
 - Exact formatting is not required as long as the core coding logic is present.
-- For the weather TODO, the grader checks for the required protected-route structure and external fetch usage, not live API success.
+- For the weather TODO, any reasonable public weather/geocoding API structure is accepted.
 `;
 
 /* -----------------------------

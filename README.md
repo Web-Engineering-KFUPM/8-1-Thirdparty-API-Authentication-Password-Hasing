@@ -1,6 +1,9 @@
 # Secure Weather Dashboard Lab
 
-**Note:** Follow the `server.js` file to implement all TODOs.
+> **Note:**
+> Please follow the `server.js` file to implement the TODOs.
+>  
+> **Due Date:** 20 April, 2026, **8:59 PM**
 
 ---
 
@@ -15,7 +18,7 @@ You must complete the TODOs in `server.js` to implement secure user authenticati
 
 ---
 
-## 📖 Reading Assignment  
+## Reading Assignment  
 Before starting the lab, review the following ZyBooks sections:
 
 1. 8.1 Third-party web APIs
@@ -95,7 +98,7 @@ In the lab:
 
 ---
 
-## ✅ Checklist Before Submitting the Lab
+## Checklist Before Submitting the Lab
 
 - [ ] **Implemented `POST /register` route** with validation and bcrypt hashing.
 - [ ] **Implemented `POST /login` route** with password comparison and JWT token creation.

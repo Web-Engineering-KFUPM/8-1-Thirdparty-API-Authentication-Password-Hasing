@@ -24,10 +24,10 @@
  *        const JWT_SECRET = "abc123";
  *      (Already defined for you below. Do NOT change it so tests pass.)
  *
- * 4) Start the server:
+ * 3) Start the server:
  *      node server.js
  *
- * 5) Health check:
+ * 4) Health check:
  *    - METHOD: GET
  *      URL:    http://localhost:3000/
  *      EXPECT: text "Server is running"
@@ -36,18 +36,6 @@
  * HOW TO SEND JSON (VERY IMPORTANT)
  * =========================================================
  * Install the postman from the VS code extension store.
- * 
- * In Postman (First complete all the TODOs to test the routes):
- *  - METHOD: POST
- *  - URL:    e.g. http://localhost:3000/register
- *  - Click on "Body" (Just Below the url input field):
- *      -> Select "raw"
- *      -> Select "JSON" from the dropdown
- *  - Example JSON:
- *      {
- *        "email": "student@example.com",
- *        "password": "mypassword123"
- *      }
  *
  * =========================================================
  * TODO 1: IMPLEMENT USER REGISTRATION (POST /register)
@@ -81,7 +69,7 @@
  * HOW TO TEST /register:
  *   - METHOD: POST
  *   - URL:    http://localhost:3000/register
- *   - BODY (raw + JSON):
+ *   - Choose Body -> Raw (after GraphQL radio button, there is a drop-down, choose JSON):
  *       {
  *         "email": "student@example.com",
  *         "password": "mypassword123"
@@ -129,7 +117,7 @@
  *   - Make sure you have already registered the user.
  *   - METHOD: POST
  *   - URL:    http://localhost:3000/login
- *   - BODY (raw + JSON):
+ *   - Choose Body -> Raw (after GraphQL radio button, there is a drop-down, choose JSON):
  *       {
  *         "email": "student@example.com",
  *         "password": "mypassword123"
@@ -209,7 +197,7 @@
  *            return res.status(400).json({ error: "City required" });
  *
  *   5) Prepare external weather API URL:
- *        const url = `https://goweather.herokuapp.com/weather/${encodeURIComponent(city)}`;
+ *        const url = `https://wttr.in/${encodeURIComponent(city)}?format=j1`;
  *
  *   6) Use fetch() to call API:
  *        const weatherResponse = await fetch(url);
@@ -231,6 +219,7 @@
  *
  *   9) If something crashes inside try block:
  *        return res.status(500).json({ error: "Server error during weather fetch" });
+ *
  */
 
 const express = require("express");
